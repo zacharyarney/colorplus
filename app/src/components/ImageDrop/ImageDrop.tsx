@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 interface DropFile extends File {
-  preview: string;
+  url: string;
 }
 
 function ImageDrop() {
@@ -14,7 +14,7 @@ function ImageDrop() {
       console.log(file);
       const dropFile: DropFile[] = acceptedFiles.map(file =>
         Object.assign(acceptedFiles[0], {
-          preview: URL.createObjectURL(file),
+          url: URL.createObjectURL(file),
         })
       );
       setFile(dropFile);
@@ -22,7 +22,7 @@ function ImageDrop() {
   });
 
   const image = file.length ? (
-    <img src={file[0].preview} style={{ maxWidth: '800px' }} alt="your image" />
+    <img src={file[0].url} style={{ maxWidth: '800px' }} alt="your image" />
   ) : null;
 
   return (
