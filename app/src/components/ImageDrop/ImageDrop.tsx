@@ -8,11 +8,11 @@ interface DropFile extends File {
 
 export function ImageDrop() {
   const [file, setFile] = useState<DropFile[]>([]);
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: false,
     onDrop: acceptedFiles => {
-      console.log(file);
       const dropFile: DropFile[] = acceptedFiles.map(file =>
         Object.assign(acceptedFiles[0], {
           url: URL.createObjectURL(file),
