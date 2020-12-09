@@ -21,9 +21,7 @@ function ImageDrop() {
     },
   });
 
-  const image = file.length ? (
-    <img src={file[0].url} style={{ maxWidth: '800px' }} alt="your image" />
-  ) : null;
+  const imageUrl = file.length ? file[0].url : '';
 
   return (
     <div>
@@ -31,9 +29,7 @@ function ImageDrop() {
         <input {...getInputProps()} />
         <p>Drop or click</p>
       </div>
-      <div>{image}</div>
+      <ImageQuantize imageUrl={imageUrl} />
     </div>
   );
 }
-
-export default ImageDrop;
