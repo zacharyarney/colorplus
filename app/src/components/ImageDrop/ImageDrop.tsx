@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { ImageQuantize } from '../ImageQuantize/ImageQuantize';
 
 interface DropFile extends File {
   url: string;
 }
 
-function ImageDrop() {
+export function ImageDrop() {
   const [file, setFile] = useState<DropFile[]>([]);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',

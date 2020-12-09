@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import ImageDrop from './components/ImageDrop/ImageDrop'
+import { ImageDrop } from './components/ImageDrop/ImageDrop'
 
 function App() {
   return (
