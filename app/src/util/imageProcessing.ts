@@ -2,8 +2,8 @@ import quantize from 'quantize';
 import getPixels from 'get-pixels';
 import ndarray from 'ndarray';
 
-export async function createPixelArray(imageUrl: string) {
-  return await getPixels(
+export function createPixelArray(imageUrl: string) {
+  return getPixels(
     imageUrl,
     (err: Error, pixels: ndarray) => {
       if (err) {
