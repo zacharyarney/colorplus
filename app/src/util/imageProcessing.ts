@@ -2,14 +2,20 @@ import quantize from 'quantize';
 import getPixels from 'get-pixels';
 import ndarray from 'ndarray';
 
-export function createPixelArray(imageUrl: string) {
+// convertImageToPixels takes in an image URL and returns a 2D ndarray of pixels with RGBA values
 export function convertImageToPixels(imageUrl: string): Promise<ndarray> {
-    imageUrl,
-    (err: Error, pixels: ndarray) => {
+  return new Promise<ndarray>((resolve, reject) => {
+    getPixels(imageUrl, (err: Error, pixels: ndarray) => {
       if (err) {
         console.log('bad image path', err);
-        return err;
+        reject(err);
       }
+
+      resolve(pixels);
+    });
+  });
+}
+
 // createPixel array takes in ndarray.data, image size, and sampling resolution and returns array of [r, g, b] arrays
 export function createPixelArray(
   pixels: ndarray.Data<number>,
