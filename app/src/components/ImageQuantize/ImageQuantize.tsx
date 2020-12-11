@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import ndarray from 'ndarray';
-import { createPixelArray } from '../../util/imageProcessing';
+import { generatePalette } from '../../util/imageProcessing';
 
 interface ImageQuantizeProps {
   imageUrl: string;
 }
 
 export function ImageQuantize(props: ImageQuantizeProps) {
-  const [pixelArr, setPixelArr] = useState<ndarray>(ndarray([]));
+  const [colorPalette, setColorPalette] = useState<number[][]>([]);
 
   useEffect(() => {
     if (props.imageUrl) {
-      const imagePixels = createPixelArray(props.imageUrl);
-      setPixelArr(imagePixels);
+      generatePalette(props.imageUrl, 10, 60).then(palette => {
+        setColorPalette(palette);
+      });
     }
   }, [props.imageUrl]);
 
