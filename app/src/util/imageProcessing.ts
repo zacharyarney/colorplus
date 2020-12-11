@@ -36,8 +36,15 @@ export function createPixelArray(
     }
   }
 
-      console.log('pixels: ', pixels);
-      return pixels;
-    }
-  );
+  return pixelArray;
+}
+
+export async function generatePalette(imageUrl: string, resolution: number, paletteSize: number) {
+  const imageNdarray = await convertImageToPixels(imageUrl);
+
+  const imageData = imageNdarray.data;
+  const size = imageNdarray.shape[0] * imageNdarray.shape[1];
+  const pixelArray = createPixelArray(imageData, size, resolution);
+
+  return quantize(pixelArray, paletteSize).palette();
 }
