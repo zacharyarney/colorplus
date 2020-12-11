@@ -16,7 +16,23 @@ export function ImageQuantize(props: ImageQuantizeProps) {
     }
   }, [props.imageUrl]);
 
-  return props.imageUrl.length ? (
-    <img src={props.imageUrl} style={{ maxWidth: '800px' }} alt="your image" />
+  const image = props.imageUrl.length ? (
+    <img src={props.imageUrl} style={{ maxWidth: '400px' }} alt="your image" />
   ) : null;
+
+  const colors = colorPalette.map((color, index) => {
+    return (
+      <div
+        style={{ height: '100px', width: '100px', background: `rgb(${color})` }}
+        key={index}
+      ></div>
+    );
+  });
+
+  return (
+    <>
+      {image}
+      <div style={{display: 'flex', flexDirection: 'row'}}>{colors}</div>
+    </>
+  );
 }
