@@ -46,5 +46,6 @@ export async function generatePalette(imageUrl: string, resolution: number, pale
   const size = imageNdarray.shape[0] * imageNdarray.shape[1];
   const pixelArray = createPixelArray(imageData, size, resolution);
 
+  // TODO: add logic to increase diversity of the palette
   return quantize(pixelArray, paletteSize).palette();
 }

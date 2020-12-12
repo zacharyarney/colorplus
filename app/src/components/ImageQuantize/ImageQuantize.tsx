@@ -10,7 +10,8 @@ export function ImageQuantize(props: ImageQuantizeProps) {
 
   useEffect(() => {
     if (props.imageUrl) {
-      generatePalette(props.imageUrl, 10, 60).then(palette => {
+      // TODO: user should be able to set sampling resolution and palette size
+      generatePalette(props.imageUrl, 1, 6).then(palette => {
         setColorPalette(palette);
       });
     }
@@ -32,7 +33,7 @@ export function ImageQuantize(props: ImageQuantizeProps) {
   return (
     <>
       {image}
-      <div style={{display: 'flex', flexDirection: 'row'}}>{colors}</div>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>{colors}</div>
     </>
   );
 }
