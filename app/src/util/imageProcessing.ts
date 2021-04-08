@@ -1,4 +1,9 @@
-import quantize from 'quantize';
+import {
+  executeAndReturnOutputFile,
+  buildInputFile,
+  getPixelColor,
+} from 'wasm-imagemagick';
+// import quantize from 'quantize';
 import getPixels from 'get-pixels';
 import ndarray from 'ndarray';
 
@@ -39,13 +44,35 @@ export function createPixelArray(
   return pixelArray;
 }
 
-export async function generatePalette(imageUrl: string, resolution: number, paletteSize: number) {
-  const imageNdarray = await convertImageToPixels(imageUrl);
+export async function generatePalette(imageUrl: string, paletteSize: number) {
+  const colorArray = [];
+  const factor = Math.sqrt(paletteSize);
+  const inputImage = await buildInputFile(imageUrl);
+  const outputFile = await executeAndReturnOutputFile({
+    inputFiles: [inputImage],
+    commands: [
+      `${inputImage.name} -sample ${paletteSize} -format gif ${inputImage.name}_sample.gif`,
+    ],
+  });
 
-  const imageData = imageNdarray.data;
-  const size = imageNdarray.shape[0] * imageNdarray.shape[1];
-  const pixelArray = createPixelArray(imageData, size, resolution);
+  if (outputFile) {
+    for (let i = 0; i < factor; i++) {
+      for (let ii = 0; ii < factor; ii++) {
+        const x = i;
+        const y = ii;
+        const color = await getPixelColor(outputFile, x, y);
+        colorArray.push(color);
+      }
+    }
+  }
+
+  return colorArray;
+
+  // const imageNdarray = await convertImageToPixels(imageUrl);
+  // const imageData = imageNdarray.data;
+  // const size = imageNdarray.shape[0] * imageNdarray.shape[1];
+  // const pixelArray = createPixelArray(imageData, size, resolution);
 
   // TODO: add logic to increase diversity of the palette
-  return quantize(pixelArray, paletteSize).palette();
+  // return quantize(pixelArray, paletteSize).palette();
 }
