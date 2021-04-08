@@ -6,13 +6,13 @@ interface ImageQuantizeProps {
 }
 
 export function ImageQuantize(props: ImageQuantizeProps) {
-  const [colorPalette, setColorPalette] = useState<number[][]>([]);
+  const [colorPalette, setColorPalette] = useState<string[]>([]);
 
   useEffect(() => {
     if (props.imageUrl) {
       // TODO: user should be able to set sampling resolution and palette size
-      generatePalette(props.imageUrl, 1, 6).then(palette => {
-        setColorPalette(palette);
+      generatePalette(props.imageUrl, 4).then(colors => {
+        setColorPalette(colors);
       });
     }
   }, [props.imageUrl]);
@@ -24,7 +24,11 @@ export function ImageQuantize(props: ImageQuantizeProps) {
   const colors = colorPalette.map((color, index) => {
     return (
       <div
-        style={{ height: '100px', width: '100px', background: `rgb(${color})` }}
+        style={{
+          height: '100px',
+          width: '100px',
+          background: `${color.substring(1)}`,
+        }}
         key={index}
       ></div>
     );
