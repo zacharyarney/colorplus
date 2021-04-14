@@ -27,7 +27,7 @@ export function ImageQuantize(props: ImageQuantizeProps) {
         style={{
           height: '100px',
           width: '100px',
-          background: `${color.substring(1)}`,
+          background: `${color}`,
         }}
         key={index}
       ></div>
