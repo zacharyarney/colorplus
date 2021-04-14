@@ -18,7 +18,7 @@ export function ImageQuantize(props: ImageQuantizeProps) {
   }, [props.imageUrl]);
 
   const image = props.imageUrl.length ? (
-    <img src={props.imageUrl} style={{ maxWidth: '400px' }} alt="your image" />
+    <img src={props.imageUrl} style={{ maxWidth: '400px' }} alt="upload" />
   ) : null;
 
   const colors = colorPalette.map((color, index) => {
