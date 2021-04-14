@@ -2,10 +2,16 @@ import {
   executeAndReturnOutputFile,
   buildInputFile,
   getPixelColor,
+  extractInfo,
 } from 'wasm-imagemagick';
 // import quantize from 'quantize';
 import getPixels from 'get-pixels';
 import ndarray from 'ndarray';
+import { ExtractInfoResultImage } from 'wasm-imagemagick/dist/src/util/imageExtractInfoTypes';
+
+interface CustomExtractInfoResult extends ExtractInfoResultImage {
+  colormap: string[];
+}
 
 // convertImageToPixels takes in an image URL and returns a 2D ndarray of pixels with RGBA values
 export function convertImageToPixels(imageUrl: string): Promise<ndarray> {
@@ -45,28 +51,39 @@ export function createPixelArray(
 }
 
 export async function generatePalette(imageUrl: string, paletteSize: number) {
-  const colorArray = [];
-  const factor = Math.sqrt(paletteSize);
+  // const colorObj: { [key: string]: boolean } = {};
+  // const factor = Math.sqrt(paletteSize);
   const inputImage = await buildInputFile(imageUrl);
   const outputFile = await executeAndReturnOutputFile({
     inputFiles: [inputImage],
     commands: [
-      `${inputImage.name} -sample ${paletteSize} -format gif ${inputImage.name}_sample.gif`,
+      `${inputImage.name} -resize 250 -quality 1 -density 32 -colors 16 ${inputImage.name}.gif`,
+      // `${inputImage.name} -sample ${factor} -format gif ${inputImage.name}_sample.gif`,
     ],
   });
 
   if (outputFile) {
-    for (let i = 0; i < factor; i++) {
-      for (let ii = 0; ii < factor; ii++) {
-        const x = i;
-        const y = ii;
-        const color = await getPixelColor(outputFile, x, y);
-        colorArray.push(color);
-      }
-    }
+    const outputFileInfo = await extractInfo(outputFile);
+    return outputFileInfo[0].image ? (outputFileInfo[0].image as CustomExtractInfoResult).colormap : [];
+    // return outputFileInfo[0].image ? outputFileInfo[0].image.colormap : [];
+    // const outputFileHeight = outputFileInfo[0].image
+    //   ? outputFileInfo[0].image.geometry.height
+    //   : 0;
+    // const outputFileWidth = outputFileInfo[0].image
+    //   ? outputFileInfo[0].image.geometry.width
+    //   : 0;
+    // for (let i = 0; i < outputFileHeight; i++) {
+    //   for (let ii = 0; ii < outputFileWidth; ii++) {
+    //     const x = i;
+    //     const y = ii;
+    //     const color = await getPixelColor(inputImage, x, y);
+    //     // colorArray.push(color);
+    //     colorObj[color] = true;
+    //   }
+    // }
   }
 
-  return colorArray;
+  return [];
 
   // const imageNdarray = await convertImageToPixels(imageUrl);
   // const imageData = imageNdarray.data;
