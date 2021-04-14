@@ -11,7 +11,7 @@ export function ImageQuantize(props: ImageQuantizeProps) {
   useEffect(() => {
     if (props.imageUrl) {
       // TODO: user should be able to set sampling resolution and palette size
-      generatePalette(props.imageUrl, 4).then(colors => {
+      generatePalette(props.imageUrl, 10).then(colors => {
         setColorPalette(colors);
       });
     }
