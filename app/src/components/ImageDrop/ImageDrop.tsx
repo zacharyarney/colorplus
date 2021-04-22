@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEventHandler, ChangeEvent } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ImageQuantize } from '../ImageQuantize/ImageQuantize';
 
@@ -8,6 +8,7 @@ interface DropFile extends File {
 
 export function ImageDrop() {
   const [file, setFile] = useState<DropFile[]>([]);
+  const [paletteSize, setPaletteSize] = useState('10');
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -22,6 +23,12 @@ export function ImageDrop() {
     },
   });
 
+  const handleSelectPaletteSize: ChangeEventHandler<HTMLSelectElement> = (
+    event: ChangeEvent<HTMLSelectElement>
+  ) => {
+    setPaletteSize(event.target.value);
+  };
+
   const imageUrl = file.length ? file[0].url : '';
 
   return (
@@ -30,7 +37,19 @@ export function ImageDrop() {
         <input {...getInputProps()} />
         <p>Drop or click</p>
       </div>
-      <ImageQuantize imageUrl={imageUrl} />
+      <select
+        name="paletteSizeSelect"
+        value={paletteSize}
+        onChange={handleSelectPaletteSize}
+      >
+        <option value="4">4</option>
+        <option value="6">6</option>
+        <option value="8">8</option>
+        <option value="10">10</option>
+        <option value="12">12</option>
+        <option value="16">16</option>
+      </select>
+      <ImageQuantize imageUrl={imageUrl} paletteSize={paletteSize} />
     </div>
   );
 }
